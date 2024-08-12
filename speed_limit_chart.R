@@ -20,4 +20,4 @@ chart <- speed |>
   ylim(0,45) +
     theme_minimal()
 
-ggsave("output/speed_chart.png", chart, width = 8, height = 5)
+ggsave("output/speed_chart.png", chart, width = 8, height = 5, bg = "white")
