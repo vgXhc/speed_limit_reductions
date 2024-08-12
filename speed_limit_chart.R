@@ -2,7 +2,7 @@ library(tidyverse)
 
 speed <- read_csv("data/Vision Zero speed limit reduction data .csv")
 
-speed |> 
+chart <- speed |> 
   mutate(inc_dec = if_else(pct_y_1 > pct_y_2, "decrease", "increase"),
          inc_dec_pct = pct_y_2 - pct_y_1,
          volume_y_2 = pct_y_2 * n_y_2) |> 
@@ -19,3 +19,5 @@ speed |>
   xlim(0,45) +
   ylim(0,45) +
     theme_minimal()
+
+ggsave("output/speed_chart.png", chart, width = 8, height = 5)
