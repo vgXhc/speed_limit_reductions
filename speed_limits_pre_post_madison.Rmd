@@ -12,6 +12,7 @@ categories:
   - transportation
   - Madison (WI)
   - Vision Zero
+creative_commons: CC BY-SA
 output:
   distill::distill_article:
     self_contained: false
