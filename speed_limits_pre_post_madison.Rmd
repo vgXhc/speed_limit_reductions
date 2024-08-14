@@ -26,7 +26,7 @@ The City of Madison adopted a Vision Zero policy in 2020. Its goal: "to eliminat
 library(tidyverse)
 library(colorspace)
 
-speed <- read_csv("data/Vision Zero speed limit reduction data .csv")
+speed <- read_csv("data/Vision_Zero_speed_limit_reduction_data.csv")
 
 chart <- speed |> 
   mutate(inc_dec = if_else(pct_y_1 > pct_y_2, "decrease", "increase"),
