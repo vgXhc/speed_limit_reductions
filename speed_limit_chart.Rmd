@@ -1,0 +1,49 @@
+---
+title: "Do speed limit reductions reduce speeds?"
+description: |
+  Comparing pre-post data in Madison, Wisconsin
+author:
+  - name: Harald Kliems 
+    orcid_id: 0000-0003-2542-0047
+    url: https://haraldkliems.netlify.app/
+date: 2024-08-14
+categories:
+  - Vision Zero
+  - transportation
+  - Madison (WI)
+  - Vision Zero
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+---
+
+The City of Madison adopted a Vision Zero policy in 2020. Its goal: "to eliminate all fatalities and severe injuries that occur as the result of traffic collisions on city streets by 2035." One of many measures the city took to achieve this goal were speed limit reductions. Despite evidence from other cities (e.g. [Hu and Cicchino 2020](https://injuryprevention.bmj.com/content/26/2/99)), many people questioned the effectiveness of speed limit reductions without changes to the physical environment. The city compiled pre- and post data on vehicle speeds to assess the effectiveness of the speed limit reductions. The data were published as a series of charts in a pdf document. I manually extracted the data from the document and combined them into a single chart. 
+
+```{r}
+
+library(tidyverse)
+
+speed <- read_csv("data/Vision Zero speed limit reduction data .csv")
+
+chart <- speed |> 
+  mutate(inc_dec = if_else(pct_y_1 > pct_y_2, "decrease", "increase"),
+         inc_dec_pct = pct_y_2 - pct_y_1,
+         volume_y_2 = pct_y_2 * n_y_2) |> 
+  ggplot(aes(pct_y_1, pct_y_2, color = inc_dec_pct, size = volume_y_2)) +
+  geom_point() +
+  scale_color_continuous_divergingx(name = "% pt decrease/increase", palette = 'RdBu', mid = 0) +
+  # scale_color_distiller(name = "% pt decrease/increase", type = "div", palette = "BrBG") +
+  scale_size(name = "Traffic volume post") +
+  geom_abline(slope = 1, intercept = 0, linetype = 3) +
+  labs(x = "Pre reduction",
+       y = "Post reduction",
+       title = "Pre-post comparison of speed limit reductions in Madison",
+       subtitle = "% of vehicles 5+ mph over initial speed limit",
+       caption = "Data: City of Madison\nData extraction and visualization: Harald Kliems") +
+  xlim(0,45) +
+  ylim(0,45) +
+    theme_minimal()
+
+chart
+```
